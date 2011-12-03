@@ -1,0 +1,6 @@
+*~
+*.swp
+lib
+bin
+/*.txt
+*.o
