@@ -5,3 +5,19 @@ To make predictions for test data:
   $ ./best_suffix.py dict.txt < ../data/spanish.txt.learn > learn.out.txt
 OR:
   $ ./best_suffix.py dict.txt < ../data/spanish.txt.test.clear > test.out.txt
+
+
+RESULTS by 07.12.2011
+  $ ./common_prefix.py < ../data/learn.1.txt > dict.1.txt 
+  $ ./best_suffix.py dict.1.txt < ../data/learn.2.txt > learn.2.out 
+  $ ../utils/evaluate.py ../data/learn.2.txt learn.2.out
+{"_expected": {"recall": 0.7208955161644088, "precision": 0.724427375874104, "f1": 0.7226571307091352}}
+  $ ./common_prefix.py < ../data/learn.2.txt > dict.2.txt 
+  $ ./best_suffix.py dict.2.txt < ../data/learn.1.txt > learn.1.out 
+  $ ../utils/evaluate.py ../data/learn.1.txt learn.1.out
+{"_expected": {"recall": 0.7191129069248637, "precision": 0.7226635309423436, "f1": 0.7208838469205153}}
+  $ ./best_suffix.py dict.1.txt < ../data/learn.1.txt > learn.11.out 
+  $ ../utils/evaluate.py ../data/learn.1.txt learn.11.out
+{"_expected": {"recall": 0.8129552950791646, "precision": 0.8162098600182639, "f1": 0.8145793267447949}}
+
+
