@@ -1,0 +1,7 @@
+To make suffix_dictionary:
+  $ ./common_prefix.py < ../data/spanish.txt.learn > dict.txt
+
+To make predictions for test data:
+  $ ./best_suffix.py dict.txt < ../data/spanish.txt.learn > learn.out.txt
+OR:
+  $ ./best_suffix.py dict.txt < ../data/spanish.txt.test.clear > test.out.txt
