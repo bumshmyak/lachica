@@ -3,6 +3,7 @@
 import sys
 import re
 import operator
+import math
 
 """
 Load suffix correspondance 2D-dict
@@ -25,7 +26,8 @@ for row in source:
   suffix = words[0]
   for variant in words[1:]:
     replacement,num = variant.split(':')
-  
+ 
+    #if int(num) > 1:
     suffix_replacement.setdefault(suffix, {})[replacement] = int(num)
 
 # cals score for lemma-suffixes variants
@@ -35,7 +37,8 @@ def score_variants(variants):
   if len(variants) == 0:
     return 0
   sum_weight = sum(variants.values())
-  return max(variants.values()) / sum_weight
+  max_weight = max(variants.values())
+  return float(max_weight) / sum_weight
 
 for row in sys.stdin:
   words = row.strip("\n\r").split("\t")
