@@ -19,7 +19,8 @@ suffixes = ['o', 'e', 'a', 'as', 'es', 'amos', 'emos',
             'ar', 'er', 'ir', 'ando', 'iendo', 'ido', 'ada',
             'adas', 'ado', 'ados', 'aremos', 'ará', 'arán', 'arás',
             'aré', 'aréis', 'aría', 'aríais', 'aríamos', 'arían',
-            'arías']
+            'arías', 'id', 'idos', 'ídos', 'erais', 'ereis', 'eron',
+            'eseis']
 
 def main():
     dictfile = None
@@ -31,7 +32,7 @@ def main():
 
     dictwords = set([])
     for word in dictfile:
-        word = word.strip('\n')
+        word = word.strip('\n\r')
         dictwords.add(word)
 
     for line in sys.stdin:
@@ -42,9 +43,9 @@ def main():
             if len(splitted) == 2:
                 for infsuff in infsuffixes:
                     candidate = splitted[0] + infsuff
-                    rank = -len(infsuff)
+                    rank = len(splitted[0])
                     if candidate in dictwords:
-                        rank = -10
+                        rank += -10
                     candidates.append((rank, candidate))
         candidates.sort()
         print line + "\t",
