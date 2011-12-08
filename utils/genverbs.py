@@ -19,8 +19,37 @@ suffixes = ['o', 'e', 'a', 'as', 'es', 'amos', 'emos',
             'ar', 'er', 'ir', 'ando', 'iendo', 'ido', 'ada',
             'adas', 'ado', 'ados', 'aremos', 'ará', 'arán', 'arás',
             'aré', 'aréis', 'aría', 'aríais', 'aríamos', 'arían',
-            'arías', 'id', 'idos', 'ídos', 'erais', 'ereis', 'eron',
-            'eseis']
+            'arías', 'id', 'idos', 'ídos', 'ído', 'ídas', 'ída',
+            'erais', 'ereis', 'eron', 'eseis', 'ida', 'idas']
+
+def inflate(stem, suff, infsuff):
+    if (stem.endswith('qu')):
+        stem = stem[:-2] + 'c'
+        return stem + infsuff
+
+    if (stem.endswith('gu')):
+        stem = stem[:-2] + 'g'
+        return stem + infsuff
+
+    if (stem.endswith('ic') and (suff.startswith('e') or suff.startswith('é'))):
+        stem = stem[:-1] + 'z'
+        return stem + infsuff
+
+    if (stem.endswith('zc') and (suff.startswith('a') or suff.startswith('o'))):
+        stem = stem[:-2] + 'c'
+        return stem + infsuff
+
+    if (stem.endswith('duj')):
+        stem = stem[:-1] + 'c'
+        return stem + infsuff
+
+    if (infsuff != 'ar' and stem.endswith(infsuff)):
+       return stem
+
+    if stem.endswith(infsuff[0]):
+        return stem + 'r'
+
+    return stem + infsuff
 
 def main():
     dictfile = None
@@ -39,13 +68,13 @@ def main():
         line = line.strip('\n\r')
         candidates = []
         for suff in suffixes:
-            splitted = re.split(suff+'$', line);
-            if len(splitted) == 2:
+            if line != suff and line.endswith(suff):
+                stem = line[:-len(suff)]
                 for infsuff in infsuffixes:
-                    candidate = splitted[0] + infsuff
-                    rank = len(splitted[0])
+                    candidate = inflate(stem, suff, infsuff)
+                    rank = len(stem)
                     if candidate in dictwords:
-                        rank += -10
+                        rank -= 10
                     candidates.append((rank, candidate))
         candidates.sort()
         print line + "\t",
