@@ -15,6 +15,7 @@ Correspondance is stored in 2D dict:
   Value - occurences number of this suffix pairs.
 """
 
+extra_length = 10
 suffix_replacement = {}
 
 for row in sys.stdin:
@@ -28,7 +29,7 @@ for row in sys.stdin:
       index += 1
 
     # Let's consider not only the least length suffix pair but some others
-    for id in xrange(max(index - 4, 0), index):
+    for id in xrange(max(index - extra_length, 0), index):
       subkey = "%s+%s"%(lemma[id:],pos)
       suffix_replacement.setdefault(form[id:], dict()).setdefault(subkey, 0)
       suffix_replacement[form[id:]][subkey] += 1
