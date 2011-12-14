@@ -85,9 +85,9 @@ for row in sys.stdin:
   best_score = 0
   for id in xrange(len(form)):
     variants = suffix_replacement.get(form[id:], {})
-    if score_variants(variants) > best_score:
-      #best_score = score_variants(variants)
-      best_score = score_first_threshold(variants)
+    score = score_first_threshold(variants)
+    if score > best_score:
+      best_score = score
       best_id = id
 
   # max_arg of choosen variants list. i.e. variant with maximal weights from best suffix probe.
