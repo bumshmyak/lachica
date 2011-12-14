@@ -75,7 +75,7 @@ def score_first_threshold(variants):
   threshold = len(sorted_pairl_list) <= 1 and sorted_pairl_list[0][1] or (sorted_pairl_list[0][1] - sorted_pairl_list[1][1])
   return float(threshold)/max_val 
 
-#suffix_replacement = combine_variants(suffix_replacement)
+suffix_replacement = combine_variants(suffix_replacement)
 
 for row in sys.stdin:
   words = row.strip("\n\r").split("\t")
