@@ -1,15 +1,6 @@
 #!/bin/bash
 
-if [ $# -lt 1 ]
-then
-    echo "usage: "$0" [verbs | nouns | adjectives]"
-    exit 1
-fi
-
-cut -f 1 ../data/spanish.txt.learn.$1 | ./gen$1.py ../data/spanish.dict > ../data/spanish.txt.result.$1
-./evaluate.py ../data/spanish.txt.learn.$1 ../data/spanish.txt.result.$1
-
-# best result on 09.11
-# verbs
-#{"_expected": {"recall": 0.9395885611338255, "precision": 0.9420218646357942, "f1": 0.9408036395075975}}
-
+../try/common_prefix.py < ../data/learn.1.txt > ../data/dict.txt
+../try/best_suffix.py ../data/dict.txt < ../data/learn.2.txt > ../data/check1.txt
+cat ../data/check1.txt | ./genverbs.py ../data/spanish.dict | ./gennouns.py ../data/spanish.dict > ../data/check2.txt
+./evaluate.py ../data/learn.2.txt ../data/check2.txt
