@@ -4,12 +4,23 @@
 import sys
 import re
 
-suffixes = []
+def getnouncandidates(word, dictwords, candidates):
+    if word in dictwords and not(word.endswith('ar') or word.endswith('er') or word.endswith('ir')):
+        candidates.append((1, word+"+N"))
+
+    if word.endswith('s') and word[:-1] in dictwords:
+        candidates.append((1, word[:-1]+"+N"))
+
+    if word.endswith('es') and word[:-2] in dictwords:
+        candidates.append((1, word[:-2]+"+N"))
+
+    if word.endswith('iones'):
+        candidates.append((1, word[:-5] + "ión"+"+N"))
 
 def main():
     dictfile = None
     if len(sys.argv) < 2:
-        print "usage: "+sys.argv[0]+" dict_file"
+        print "usage: "+sys.argv[0]+" words_file"
         exit(1)
 
     dictfile = open(sys.argv[1])
@@ -19,35 +30,27 @@ def main():
         word = word.strip('\n\r')
         dictwords.add(word)
 
-    for word in sys.stdin:
-        word = word.strip('\n\r')
+    for line in sys.stdin:
+        line = line.strip('\n\r')
+        words = line.split('\t')
         candidates = []
-        candidates.append((-1, word))
-
-        if word in dictwords:
-            candidates.append((-10, word))
-
-        if word.endswith('s') and word[:-1] in dictwords:
-            candidates.append((-10, word[:-1]))
-
-        if word.endswith('es') and word[:-2] in dictwords:
-            candidates.append((-10, word[:-2]))
-
-        if word.endswith('s'):
-            candidates.append((-2, word[:-1]))
-
-        if word.endswith('es'):
-            candidates.append((-2, word[:-2]))
-
-        if word.endswith('iones'):
-            candidates.append((-3, word[:-5] + "ión"))
-        
+        getnouncandidates(words[0], dictwords, candidates)
         candidates.sort()
-        print word + "\t",
-        if len(candidates) == 0:
-            print "###"
-        else:
-            print candidates[0][1]+"+N"
+        if len(candidates) > 0 and candidates[0][1] not in words[1:]:
+            changed = False
+            for i in xrange(1, len(words)):
+                if words[i].endswith("+N"):
+                    changed = True
+                    words[i] = candidates[0][1]
+                    break
+
+            if not changed:
+                words.append(candidates[0][1])
+            
+        sys.stdout.write(words[0])
+        for i in xrange(1, len(words)):
+            sys.stdout.write("\t" + words[i])
+        sys.stdout.write("\n")
 
 if __name__ == "__main__":
     main()
